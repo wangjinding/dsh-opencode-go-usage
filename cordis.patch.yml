@@ -21,4 +21,4 @@
 
 - insert:
     - id: opencode-usage
-      name: "dsh-opencode-usage"
+      name: "@wangjinding/dsh-opencode-go-usage"
