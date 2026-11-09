@@ -1,0 +1,24 @@
+# dsh-opencode-usage bundle patch
+#
+# 挂载 OpenCode Go 用量查看插件：
+#   ① 服务端：GET /plugin/opencode-usage（代理 opencode.ai 的 /usage，带 15 秒缓存）
+#   ② 服务端：opencode_usage 工具（让 agent 也能查）
+#   ③ 客户端：左侧栏底部「OpenCode Go」卡片（三条配额进度条 + 刷新按钮）
+#
+# 凭证（三选一，按优先级）：
+#   config.apiKey  >  config.envFile 里的 OPENCODE_API_KEY  >  进程环境变量 OPENCODE_API_KEY
+#
+# 用法示例（在你自己 profile 的 cordis.patch.yml 里覆盖，别写进本包）：
+#   - id: opencode-usage
+#     config:
+#       apiKey: oc_sk_xxx
+#   或者：
+#   - id: opencode-usage
+#     config:
+#       envFile: /path/to/.env
+#
+# 回滚：从 ~/.dsh/profiles/<profile>/package.json 的 dsh.profile.bundles 里删掉本包，再 pnpm install。
+
+- insert:
+    - id: opencode-usage
+      name: "dsh-opencode-usage"
