@@ -42,13 +42,29 @@ pnpm add file:/path/to/dsh-opencode-usage
 
 ## 配置凭证
 
-三选一，按优先级：
+五级查找，从上到下第一个命中即用：
 
-| 顺序 | 来源 |
+| 顺序 | 来源 | 说明 |
+|---|---|---|
+| 1 | `config.apiKey` | 显式配置，优先级最高 |
+| 2 | `config.envFile` 指向的 `.env` | 文件里的 `OPENCODE_API_KEY` |
+| 3 | DSH 的 launchEnvironment | DSH 启动时读的 `.env` 层（process / project-env / user-env） |
+| 4 | 进程环境变量 `OPENCODE_API_KEY` | 由 DSH 或你的 shell 注入 |
+| 5 | **自动发现** | 见下 |
+
+### 自动发现（默认开启）
+
+第 1–4 级全落空时，插件自己去找，范围是**有界**的：
+
+| 顺序 | 位置 |
 |---|---|
-| 1 | `config.apiKey` |
-| 2 | `config.envFile` 指向的 `.env` 里的 `OPENCODE_API_KEY` |
-| 3 | 进程环境变量 `OPENCODE_API_KEY` |
+| 1 | `$DSH_HOME/.env`（通常 `~/.dsh/.env`） |
+| 2 | DSH 启动目录的 `.env` |
+| 3 | 每个 DSH 工作空间根目录下的 `.env`（工作空间来自 `$DSH_HOME/storages/workspace.json`） |
+| 4 | 工作空间内递归查找 `.env*`，深度 ≤ 4，跳过 `node_modules` / `.git` / `.pnpm` / `dist` / `build` / `target` / `.venv` 等，最多 400 个 |
+
+只读文件名匹配 `.env*` 的文件，只取 `OPENCODE_API_KEY` 这一行；值不写日志、不进接口响应（响应里只有百分比和 `source` 路径）。
+想关掉：`config.autoDiscover: false`。
 
 写在**你自己 profile 的** `cordis.patch.yml`（不要改本包）：
 
@@ -75,6 +91,7 @@ pnpm add file:/path/to/dsh-opencode-usage
     cacheSeconds: 15                          # 缓存秒数
     timeoutMs: 12000                          # 单次请求超时
     envKey: OPENCODE_API_KEY                  # 变量名
+    autoDiscover: true                        # 是否自动发现 .env（默认 true）
 ```
 
 ## 实现要点

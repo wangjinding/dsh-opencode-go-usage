@@ -1,6 +1,6 @@
 {
   "name": "@wangjinding/dsh-opencode-go-usage",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "OpenCode Go 套餐用量查看：DSH 左侧栏卡片（滚动/本周/本月三条配额进度条 + 重置倒计时 + 刷新按钮），并提供 opencode_usage 工具与 /plugin/opencode-usage 接口。直连 opencode.ai，API Key 不经过浏览器。",
   "type": "module",
   "license": "MIT",
