@@ -1,0 +1,60 @@
+{
+  "format": 1,
+  "title": {
+    "zh-CN": "我的 DSH 插件",
+    "en": "我的 DSH 插件"
+  },
+  "metadata": {
+    "categories": {
+      "monitor": {
+        "title": {
+          "zh-CN": "monitor",
+          "en": "monitor"
+        }
+      }
+    },
+    "labels": {},
+    "sortKeys": {}
+  },
+  "plugins": [
+    {
+      "name": "@wangjinding/dsh-opencode-go-usage",
+      "title": {
+        "zh-CN": "OpenCode Go 套餐用量查看：DSH 左侧栏卡片（滚动/本周/本月三条配额进度条 + 重置倒计时 + 刷新按钮）"
+      },
+      "description": {
+        "zh-CN": "OpenCode Go 套餐用量查看：DSH 左侧栏卡片（滚动/本周/本月三条配额进度条 + 重置倒计时 + 刷新按钮），并提供 opencode_usage 工具与 /plugin/opencode-usage 接口。直连 opencode.ai，API Key 不经过浏览器。"
+      },
+      "author": "wangjinding",
+      "homepage": "https://github.com/wangjinding/dsh-opencode-go-usage#readme",
+      "repository": {
+        "url": "https://github.com/wangjinding/dsh-opencode-go-usage"
+      },
+      "metadata": {
+        "category": "monitor",
+        "keywords": [
+          "dsh",
+          "dsh-plugin",
+          "opencode",
+          "usage",
+          "quota",
+          "sidebar"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
+      "versions": [
+        {
+          "version": "1.0.2",
+          "publishTimestamp": 1794209987,
+          "source": {
+            "type": "npm"
+          },
+          "engines": {
+            "dsh": ">=0.2.1"
+          }
+        }
+      ]
+    }
+  ]
+}
