@@ -55,6 +55,86 @@
           }
         }
       ]
+    },
+    {
+      "name": "@wangjinding/dsh-agnes-media",
+      "title": {
+        "zh-CN": "Agnes 生图 / 生视频能力：设置页配置并测试 API Key（存 DSH 凭据库），提供 agnes_genera"
+      },
+      "description": {
+        "zh-CN": "Agnes 生图 / 生视频能力：设置页配置并测试 API Key（存 DSH 凭据库），提供 agnes_generate_image 与 agnes_generate_video 工具。"
+      },
+      "author": "wangjinding",
+      "homepage": "https://github.com/wangjinding/dsh-agnes-media#readme",
+      "repository": {
+        "url": "https://github.com/wangjinding/dsh-agnes-media"
+      },
+      "metadata": {
+        "category": "monitor",
+        "keywords": [
+          "dsh",
+          "dsh-plugin",
+          "agnes",
+          "image",
+          "video",
+          "generation",
+          "media"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
+      "versions": [
+        {
+          "version": "1.0.0",
+          "publishTimestamp": 1795398826,
+          "source": {
+            "type": "npm"
+          },
+          "engines": {
+            "dsh": ">=0.2.1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "@wangjinding/dsh-comfyui",
+      "title": {
+        "zh-CN": "把局域网 ComfyUI 接进 DSH：设置页配置地址并测试，提供 comfy_generate_image（内置 Z-"
+      },
+      "description": {
+        "zh-CN": "把局域网 ComfyUI 接进 DSH：设置页配置地址并测试，提供 comfy_generate_image（内置 Z-Image Turbo）、comfy_run_workflow、comfy_upload、comfy_status 工具。"
+      },
+      "author": "wangjinding",
+      "homepage": "https://github.com/wangjinding/dsh-comfyui#readme",
+      "repository": {
+        "url": "https://github.com/wangjinding/dsh-comfyui"
+      },
+      "metadata": {
+        "category": "monitor",
+        "keywords": [
+          "dsh",
+          "dsh-plugin",
+          "comfyui",
+          "stable-diffusion",
+          "image",
+          "video",
+          "workflow"
+        ],
+        "labels": [],
+        "sortKeys": {}
+      },
+      "versions": [
+        {
+          "version": "1.0.0",
+          "publishTimestamp": 1795398826,
+          "source": {
+            "type": "npm"
+          },
+          "engines": {
+            "dsh": ">=0.2.1"
+          }
+        }
+      ]
     }
   ]
 }
