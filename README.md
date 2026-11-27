@@ -42,15 +42,21 @@ pnpm add file:/path/to/dsh-opencode-usage
 
 ## 配置凭证
 
-五级查找，从上到下第一个命中即用：
+七级查找，从上到下第一个命中即用（参考名默认 **`OPENCODE_GO_API_KEY`**，旧名 `OPENCODE_API_KEY` 作兜底）：
 
 | 顺序 | 来源 | 说明 |
 |---|---|---|
 | 1 | `config.apiKey` | 显式配置，优先级最高 |
-| 2 | `config.envFile` 指向的 `.env` | 文件里的 `OPENCODE_API_KEY` |
-| 3 | DSH 的 launchEnvironment | DSH 启动时读的 `.env` 层（process / project-env / user-env） |
-| 4 | 进程环境变量 `OPENCODE_API_KEY` | 由 DSH 或你的 shell 注入 |
-| 5 | **自动发现** | 见下 |
+| 2 | `config.envFile` 指向的 `.env` | 文件里的 `OPENCODE_GO_API_KEY` / `OPENCODE_API_KEY` |
+| 3 | **DSH 凭证库** `ctx.credentials.resolve(ref)` | **推荐**：provider 用的 key 就存在这里，`~/.dsh/.credentials.yaml` 的 `refs:` 段 |
+| 4 | DSH 的 launchEnvironment | DSH 启动时读的 `.env` 层（process / project-env / user-env） |
+| 5 | 进程环境变量 | `OPENCODE_GO_API_KEY` → `OPENCODE_API_KEY` |
+| 6 | **自动发现** | 见下 |
+| 7 | 直读 `<DSH_HOME>/.credentials.yaml` | 凭证库服务不可用时的兜底（flow map 与缩进块两种 YAML 都认） |
+
+> ⚠️ **为什么第 3 级最关键**：DSH 的 credential store **从不把值物化进 `process.env`**，
+> 也不会写进 `.env` 层。所以「provider 能用、插件读不到」时，几乎都是漏了这一层。
+> 1.0.7 之前的版本只查到第 5 级，Windows 上尤其明显（没有 `HOME`，`dshHomeDir()` 也拿不到路径）。
 
 ### 自动发现（默认开启）
 
@@ -63,7 +69,7 @@ pnpm add file:/path/to/dsh-opencode-usage
 | 3 | 每个 DSH 工作空间根目录下的 `.env`（工作空间来自 `$DSH_HOME/storages/workspace.json`） |
 | 4 | 工作空间内递归查找 `.env*`，深度 ≤ 4，跳过 `node_modules` / `.git` / `.pnpm` / `dist` / `build` / `target` / `.venv` 等，最多 400 个 |
 
-只读文件名匹配 `.env*` 的文件，只取 `OPENCODE_API_KEY` 这一行；值不写日志、不进接口响应（响应里只有百分比和 `source` 路径）。
+只读文件名匹配 `.env*` 的文件，按 `OPENCODE_GO_API_KEY` → `OPENCODE_API_KEY` 取第一行命中；值不写日志、不进接口响应（响应里只有百分比和 `source` 路径）。
 想关掉：`config.autoDiscover: false`。
 
 写在**你自己 profile 的** `cordis.patch.yml`（不要改本包）：
@@ -90,7 +96,7 @@ pnpm add file:/path/to/dsh-opencode-usage
     baseUrl: https://opencode.ai/zen/go/v1   # 上游地址
     cacheSeconds: 15                          # 缓存秒数
     timeoutMs: 12000                          # 单次请求超时
-    envKey: OPENCODE_API_KEY                  # 变量名
+    envKey: OPENCODE_GO_API_KEY               # 参考名（旧名 OPENCODE_API_KEY 自动兜底）
     autoDiscover: true                        # 是否自动发现 .env（默认 true）
 ```
 
@@ -110,3 +116,16 @@ pnpm add file:/path/to/dsh-opencode-usage
 ## License
 
 MIT
+
+## 本地验证（不联网）
+
+仓库里带了一个离线验证脚本：stub 掉 `fetch`，只看 token 是从哪一层解析出来的。
+
+```bash
+node verify.mjs
+# 或
+npm run verify
+```
+
+覆盖四个场景：DSH 凭证库命中、`~/.dsh/.credentials.yaml` 的 flow map 写法、
+缩进块写法、以及完全没有凭证时的报错文案。
