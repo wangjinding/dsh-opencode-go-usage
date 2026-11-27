@@ -49,10 +49,10 @@ pnpm add file:/path/to/dsh-opencode-usage
 | 1 | `config.apiKey` | 显式配置，优先级最高 |
 | 2 | `config.envFile` 指向的 `.env` | 文件里的 `OPENCODE_GO_API_KEY` / `OPENCODE_API_KEY` |
 | 3 | **DSH 凭证库** `ctx.credentials.resolve(ref)` | **推荐**：provider 用的 key 就存在这里，`~/.dsh/.credentials.yaml` 的 `refs:` 段 |
-| 4 | DSH 的 launchEnvironment | DSH 启动时读的 `.env` 层（process / project-env / user-env） |
-| 5 | 进程环境变量 | `OPENCODE_GO_API_KEY` → `OPENCODE_API_KEY` |
-| 6 | **自动发现** | 见下 |
-| 7 | 直读 `<DSH_HOME>/.credentials.yaml` | 凭证库服务不可用时的兜底（flow map 与缩进块两种 YAML 都认） |
+| 4 | 直读 `<DSH_HOME>/.credentials.yaml` | 凭证库背后的文件；flow map 与缩进块两种 YAML 都认。**排在 .env 之前**，避免被无关的 `.env` 抢走 |
+| 5 | DSH 的 launchEnvironment | DSH 启动时读的 `.env` 层（process / project-env / user-env） |
+| 6 | 进程环境变量 | `OPENCODE_GO_API_KEY` → `OPENCODE_API_KEY` |
+| 7 | **自动发现** | 见下 |
 
 > ⚠️ **为什么第 3 级最关键**：DSH 的 credential store **从不把值物化进 `process.env`**，
 > 也不会写进 `.env` 层。所以「provider 能用、插件读不到」时，几乎都是漏了这一层。
